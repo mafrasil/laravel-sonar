@@ -52,7 +52,7 @@ class SonarStatsCommand extends Command
             )
             ->groupBy('name', 'page')
             ->orderByDesc('impressions')
-            ->limit($this->option('limit'))
+            ->limit((int) $this->option('limit'))
             ->get();
     }
 }
