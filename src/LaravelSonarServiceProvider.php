@@ -60,20 +60,20 @@ class LaravelSonarServiceProvider extends PackageServiceProvider
 
             // Config
             $this->publishes([
-                __DIR__ . '/../config/sonar.php' => config_path('sonar.php'),
+                __DIR__.'/../config/sonar.php' => config_path('sonar.php'),
             ], 'sonar-config');
 
             // Views
-            if (is_dir(__DIR__ . '/../resources/views')) {
+            if (is_dir(__DIR__.'/../resources/views')) {
                 $this->publishes([
-                    __DIR__ . '/../resources/views' => resource_path('views/vendor/sonar'),
+                    __DIR__.'/../resources/views' => resource_path('views/vendor/sonar'),
                 ], 'sonar-views');
             }
 
             // Assets
-            if (is_dir(__DIR__ . '/../dist')) {
+            if (is_dir(__DIR__.'/../dist')) {
                 $this->publishes([
-                    __DIR__ . '/../dist/sonar.iife.js' => public_path('vendor/sonar/sonar.js'),
+                    __DIR__.'/../dist/sonar.iife.js' => public_path('vendor/sonar/sonar.js'),
                 ], 'sonar-assets');
             }
 
