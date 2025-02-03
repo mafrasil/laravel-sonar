@@ -73,9 +73,9 @@ class LaravelSonarServiceProvider extends PackageServiceProvider
             }
 
             // Assets
-            if (is_dir(__DIR__ . '/../dist')) {
+            if (is_dir(__DIR__.'/../dist')) {
                 $this->publishes([
-                    __DIR__ . '/../dist/sonar.iife.js' => public_path('vendor/sonar/sonar.js'), // Specific file with new name
+                    __DIR__.'/../dist/sonar.iife.js' => public_path('vendor/sonar/sonar.js'), // Specific file with new name
                     // Add other dist files if needed
                 ], 'laravel-sonar-assets');
             }
