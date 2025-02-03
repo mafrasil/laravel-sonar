@@ -46,9 +46,9 @@ class SonarStatsCommand extends Command
             ->select(
                 'name',
                 'location',
-                DB::raw('SUM(CASE WHEN type = "impression" THEN 1 ELSE 0 END) as impressions'),
-                DB::raw('SUM(CASE WHEN type = "hover" THEN 1 ELSE 0 END) as hovers'),
-                DB::raw('SUM(CASE WHEN type = "click" THEN 1 ELSE 0 END) as clicks')
+                DB::raw("SUM(CASE WHEN type = 'impression' THEN 1 ELSE 0 END) as impressions"),
+                DB::raw("SUM(CASE WHEN type = 'hover' THEN 1 ELSE 0 END) as hovers"),
+                DB::raw("SUM(CASE WHEN type = 'click' THEN 1 ELSE 0 END) as clicks")
             )
             ->groupBy('name', 'location')
             ->orderByDesc('impressions')
