@@ -24,15 +24,16 @@ You can install the package via composer:
 composer require mafrasil/laravel-sonar
 ```
 
-Then install the package:
+Then install the package and publish the assets:
 
 ```bash
 php artisan sonar:install
+php artisan vendor:publish --tag=sonar-assets
 ```
 
 This will publish the config file, assets and run the migrations.
 
-Alternatively, you can publish the config file, assets and run the migrations separately:
+You can also publish the config file, assets and run the migrations separately:
 
 ```bash
 php artisan vendor:publish --tag=sonar-config # Publish the config file

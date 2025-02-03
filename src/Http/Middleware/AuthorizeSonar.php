@@ -10,8 +10,7 @@ class AuthorizeSonar
 {
     public function handle(Request $request, Closure $next)
     {
-        return app()->environment('local') ||
-        Gate::check('viewSonar', [$request->user()])
+        return Gate::check('viewSonar', [$request->user()])
         ? $next($request)
         : abort(403);
     }
