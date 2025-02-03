@@ -24,11 +24,27 @@ You can install the package via composer:
 composer require mafrasil/laravel-sonar
 ```
 
-Publish and run the migrations:
+Then install the package:
 
 ```bash
-php artisan vendor:publish --provider="Mafrasil\LaravelSonar\LaravelSonarServiceProvider"
-php artisan migrate
+php artisan sonar:install
+```
+
+This will publish the config file, assets and run the migrations.
+
+Alternatively, you can publish the config file, assets and run the migrations separately:
+
+```bash
+php artisan vendor:publish --tag=sonar-config # Publish the config file
+php artisan vendor:publish --tag=sonar-assets # Publish the assets
+php artisan vendor:publish --tag=sonar-migrations # Publish the migrations
+php artisan migrate # Run the migrations
+```
+
+You can also publish the views of the dashboard:
+
+```bash
+php artisan vendor:publish --tag=sonar-views
 ```
 
 ### Optional: Export React Components

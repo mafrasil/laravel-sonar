@@ -7,6 +7,7 @@ use Mafrasil\LaravelSonar\Commands\ExportReactCommand;
 use Mafrasil\LaravelSonar\Commands\LaravelSonarCommand;
 use Mafrasil\LaravelSonar\Commands\SonarStatsCommand;
 use Mafrasil\LaravelSonar\View\Components\SonarScripts;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -18,7 +19,7 @@ class LaravelSonarServiceProvider extends PackageServiceProvider
             ->name('laravel-sonar')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_sonar_events_table')
+            ->discoversMigrations()
             ->hasCommands([
                 LaravelSonarCommand::class,
                 ExportReactCommand::class,
@@ -26,7 +27,21 @@ class LaravelSonarServiceProvider extends PackageServiceProvider
             ])
             ->hasRoute('api')
             ->hasRoute('web')
-            ->hasViewComponent('sonar', SonarScripts::class);
+            ->hasViewComponent('sonar', SonarScripts::class)
+            ->hasInstallCommand(function (InstallCommand $command) {
+                $command
+                    ->startWith(function (InstallCommand $command) {
+                        $command->info('Installing Laravel Sonar...');
+                    })
+                    ->publishConfigFile()
+                    ->publishAssets()
+                    ->publishMigrations()
+                    ->askToRunMigrations()
+                    ->askToStarRepoOnGitHub('mafrasil/laravel-sonar')
+                    ->endWith(function (InstallCommand $command) {
+                        $command->info('Have a great day!');
+                    });
+            });
     }
 
     public function packageBooted()
@@ -47,13 +62,13 @@ class LaravelSonarServiceProvider extends PackageServiceProvider
         if ($this->app->runningInConsole()) {
             // Config
             $this->publishes([
-                __DIR__.'/../config/sonar.php' => config_path('sonar.php'),
+                __DIR__ . '/../config/sonar.php' => config_path('sonar.php'),
             ], ['laravel-sonar', 'laravel-sonar-config']);
 
             // Views
-            if (is_dir(__DIR__.'/../resources/views')) {
+            if (is_dir(__DIR__ . '/../resources/views')) {
                 $this->publishes([
-                    __DIR__.'/../resources/views' => resource_path('views/vendor/sonar'),
+                    __DIR__ . '/../resources/views' => resource_path('views/vendor/sonar'),
                 ], ['laravel-sonar', 'laravel-sonar-views']);
             }
 
