@@ -39,21 +39,22 @@ class ExportReactCommand extends Command
     {
         $targetDir = $this->argument('directory') ?? resource_path('js/Sonar');
         $packagePath = realpath(dirname(dirname(dirname(__FILE__))));
-        $resourcesPath = $packagePath . '/resources/js';
+        $resourcesPath = $packagePath.'/resources/js';
 
         $copiedFiles = 0;
 
         foreach ($this->reactComponents as $file) {
-            $source = $resourcesPath . '/' . $file;
-            $destination = $targetDir . '/' . $file;
+            $source = $resourcesPath.'/'.$file;
+            $destination = $targetDir.'/'.$file;
 
-            if (!File::exists($source) || !is_readable($source)) {
+            if (! File::exists($source) || ! is_readable($source)) {
                 $this->error("Could not read source file: {$file}");
+
                 continue;
             }
 
             $dirPath = dirname($destination);
-            if (!File::exists($dirPath)) {
+            if (! File::exists($dirPath)) {
                 File::makeDirectory($dirPath, 0755, true);
             }
 
@@ -63,12 +64,13 @@ class ExportReactCommand extends Command
                 $this->info("✓ Exported: {$file}");
                 $copiedFiles++;
             } catch (\Exception $e) {
-                $this->error("Error processing {$file}: " . $e->getMessage());
+                $this->error("Error processing {$file}: ".$e->getMessage());
             }
         }
 
         if ($copiedFiles === 0) {
             $this->error("\nNo files were copied!");
+
             return self::FAILURE;
         }
 

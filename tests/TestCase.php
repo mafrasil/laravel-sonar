@@ -3,8 +3,8 @@
 namespace Mafrasil\LaravelSonar\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Orchestra\Testbench\TestCase as Orchestra;
 use Mafrasil\LaravelSonar\LaravelSonarServiceProvider;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {

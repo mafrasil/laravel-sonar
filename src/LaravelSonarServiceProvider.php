@@ -32,7 +32,7 @@ class LaravelSonarServiceProvider extends PackageServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../database/migrations' => database_path('migrations'),
+                __DIR__.'/../database/migrations' => database_path('migrations'),
             ], 'sonar-migrations');
         }
     }
