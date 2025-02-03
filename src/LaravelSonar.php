@@ -8,7 +8,7 @@ use Mafrasil\LaravelSonar\Models\SonarEvent;
 
 class LaravelSonar
 {
-    public function track(string $name, string $type, array $metadata = null)
+    public function track(string $name, string $type, ?array $metadata = null)
     {
         return SonarEvent::create([
             'name' => $name,
