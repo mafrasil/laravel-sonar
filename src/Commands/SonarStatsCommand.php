@@ -14,13 +14,14 @@ class SonarStatsCommand extends Command
     {
         $stats = $this->getStats();
 
-        $headers = ['#', 'Name', 'Impressions', 'Hovers', 'Clicks'];
+        $headers = ['#', 'Name', 'Location', 'Impressions', 'Hovers', 'Clicks'];
         $rows = [];
 
         foreach ($stats as $index => $stat) {
             $rows[] = [
                 $index + 1,
                 $stat->name,
+                $stat->page ?? '-',
                 number_format($stat->impressions),
                 sprintf(
                     "%s (%s%%)",
@@ -43,11 +44,12 @@ class SonarStatsCommand extends Command
         return DB::table('sonar_events')
             ->select(
                 'name',
+                'page',
                 DB::raw('SUM(CASE WHEN type = "impression" THEN 1 ELSE 0 END) as impressions'),
                 DB::raw('SUM(CASE WHEN type = "hover" THEN 1 ELSE 0 END) as hovers'),
                 DB::raw('SUM(CASE WHEN type = "click" THEN 1 ELSE 0 END) as clicks')
             )
-            ->groupBy('name')
+            ->groupBy('name', 'page')
             ->orderByDesc('impressions')
             ->limit($this->option('limit'))
             ->get();

@@ -26,8 +26,7 @@ class LaravelSonarServiceProvider extends PackageServiceProvider
             ])
             ->hasRoute('api')
             ->hasRoute('web')
-            ->hasViewComponent('sonar', SonarScripts::class)
-            ->hasAssets();
+            ->hasViewComponent('sonar', SonarScripts::class);
     }
 
     public function packageBooted()
@@ -45,9 +44,25 @@ class LaravelSonarServiceProvider extends PackageServiceProvider
         });
 
         if ($this->app->runningInConsole()) {
+            // Config
             $this->publishes([
-                __DIR__.'/../database/migrations' => database_path('migrations'),
-            ], 'sonar-migrations');
+                __DIR__ . '/../config/sonar.php' => config_path('sonar.php'),
+            ], ['laravel-sonar', 'laravel-sonar-config']);
+
+            // Views
+            if (is_dir(__DIR__ . '/../resources/views')) {
+                $this->publishes([
+                    __DIR__ . '/../resources/views' => resource_path('views/vendor/sonar'),
+                ], ['laravel-sonar', 'laravel-sonar-views']);
+            }
+
+            /*
+        if (is_dir(__DIR__ . '/../resources/dist')) {
+        $this->publishes([
+        __DIR__ . '/../resources/dist' => public_path('vendor/sonar'),
+        ], 'laravel-sonar-assets');
+        }
+         */
         }
     }
 }

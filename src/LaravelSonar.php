@@ -14,9 +14,11 @@ class LaravelSonar
             'name' => $name,
             'type' => $type,
             'metadata' => $metadata,
-            'page' => request()->path(),
-            'user_agent' => request()->userAgent(),
-            'screen_size' => ['width' => 0, 'height' => 0],
+            'location' => request()->path(),
+            'platform' => [
+                'user_agent' => request()->userAgent(),
+                'screen' => ['width' => 0, 'height' => 0],
+            ],
             'client_timestamp' => now(),
         ]);
     }
@@ -39,8 +41,8 @@ class LaravelSonar
             ->get();
     }
 
-    // Get most active pages
-    public function getTopPages(int $limit = 10,  ? \DateTime $startDate = null) : Collection
+    // Get most active locations
+    public function getTopLocations(int $limit = 10,  ? \DateTime $startDate = null) : Collection
     {
         $query = SonarEvent::query();
 
@@ -48,8 +50,8 @@ class LaravelSonar
             $query->where('created_at', '>=', $startDate);
         }
 
-        return $query->groupBy('page')
-            ->select('page', DB::raw('count(*) as count'))
+        return $query->groupBy('location')
+            ->select('location', DB::raw('count(*) as count'))
             ->orderByDesc('count')
             ->limit($limit)
             ->get();
@@ -102,13 +104,13 @@ class LaravelSonar
     public function getUserEngagement(): array
     {
         $totalEvents = SonarEvent::count();
-        $uniquePages = SonarEvent::distinct('page')->count();
+        $uniqueLocations = SonarEvent::distinct('location')->count();
         $clickRate = SonarEvent::where('type', 'click')->count();
         $hoverRate = SonarEvent::where('type', 'hover')->count();
 
         return [
             'total_events' => $totalEvents,
-            'unique_pages' => $uniquePages,
+            'unique_locations' => $uniqueLocations,
             'click_rate' => $clickRate,
             'hover_rate' => $hoverRate,
         ];
@@ -148,13 +150,14 @@ class LaravelSonar
     public function getBrowserStats(): Collection
     {
         return DB::table('sonar_events')
-            ->select('user_agent', DB::raw('count(*) as count'))
-            ->groupBy('user_agent')
+            ->select('platform', DB::raw('count(*) as count'))
+            ->groupBy('platform')
             ->orderByDesc('count')
             ->get()
             ->map(function ($stat) {
+                $platform = json_decode($stat->platform);
                 return [
-                    'user_agent' => $stat->user_agent,
+                    'user_agent' => $platform->user_agent,
                     'count' => $stat->count,
                     'percentage' => $this->calculatePercentage($stat->count, DB::table('sonar_events')->count()),
                 ];
@@ -165,15 +168,15 @@ class LaravelSonar
     public function getScreenSizeStats(): Collection
     {
         return DB::table('sonar_events')
-            ->select('screen_size', DB::raw('count(*) as count'))
-            ->groupBy('screen_size')
+            ->select('platform', DB::raw('count(*) as count'))
+            ->groupBy('platform')
             ->orderByDesc('count')
             ->get()
             ->map(function ($stat) {
-                $size = json_decode($stat->screen_size);
+                $platform = json_decode($stat->platform);
                 return [
-                    'width' => $size->width,
-                    'height' => $size->height,
+                    'width' => $platform->screen->width,
+                    'height' => $platform->screen->height,
                     'count' => $stat->count,
                     'percentage' => $this->calculatePercentage($stat->count, DB::table('sonar_events')->count()),
                 ];
@@ -203,17 +206,17 @@ class LaravelSonar
             ->values();
     }
 
-    // Get page interaction statistics
-    public function getPageStats(): Collection
+    // Get location interaction statistics
+    public function getLocationStats(): Collection
     {
         return DB::table('sonar_events')
-            ->select('page', DB::raw('count(*) as count'))
-            ->groupBy('page')
+            ->select('location', DB::raw('count(*) as count'))
+            ->groupBy('location')
             ->orderByDesc('count')
             ->get()
             ->map(function ($stat) {
                 return [
-                    'page' => $stat->page,
+                    'location' => $stat->location,
                     'count' => $stat->count,
                     'percentage' => $this->calculatePercentage($stat->count, DB::table('sonar_events')->count()),
                 ];

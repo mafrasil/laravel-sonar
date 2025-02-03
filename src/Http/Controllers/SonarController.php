@@ -15,9 +15,8 @@ class SonarController extends Controller
                 'name' => $event['name'],
                 'type' => $event['type'],
                 'metadata' => $event['metadata'] ?? null,
-                'page' => $event['page'],
-                'user_agent' => $event['userAgent'],
-                'screen_size' => $event['screenSize'],
+                'location' => $event['location'],
+                'platform' => $event['platform'],
                 'client_timestamp' => $event['timestamp'],
             ]);
         });

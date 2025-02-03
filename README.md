@@ -27,20 +27,8 @@ composer require mafrasil/laravel-sonar
 Publish and run the migrations:
 
 ```bash
-php artisan vendor:publish --tag="laravel-sonar-migrations"
+php artisan vendor:publish --provider="Mafrasil\LaravelSonar\LaravelSonarServiceProvider"
 php artisan migrate
-```
-
-Publish the config file:
-
-```bash
-php artisan vendor:publish --tag="laravel-sonar-config"
-```
-
-Publish the JavaScript assets:
-
-```bash
-php artisan sonar:publish-assets
 ```
 
 ### Optional: Export React Components
@@ -200,9 +188,55 @@ $topEvents = LaravelSonar::getTopEvents(
 $engagement = LaravelSonar::getUserEngagement();
 ```
 
-### Example Dashboard
+## Dashboard & Analytics
 
-Here's an example of how to create a simple dashboard using these methods:
+### CLI Analytics
+
+The package includes a convenient command-line interface for quick analytics overview:
+
+```bash
+php artisan sonar:stats --limit=20
+```
+
+This is particularly useful for quick analytics checks or automated reporting scripts.
+
+### Access Control
+
+By default, the Sonar dashboard is only accessible in the local environment. To allow specific users in other environments, configure the allowed emails in your `config/sonar.php`:
+
+```php
+'allowed_emails' => [
+    'user@example.com',
+],
+```
+
+You can also customize the authorization logic by overriding the `viewSonar` gate in your `AuthServiceProvider`:
+
+```php
+use Illuminate\Support\Facades\Gate;
+public function boot()
+{
+Gate::define('viewSonar', function ($user) {
+return $user->hasRole('admin') || $user->hasPermission('view-analytics');
+});
+}
+```
+
+### Dashboard Access
+
+The dashboard is available at `/sonar` and provides:
+
+-   Event type distribution
+-   Most active pages
+-   Click and hover rates
+-   User engagement metrics
+-   Browser and device statistics
+-   Screen size distribution
+-   Detailed element interaction analysis
+
+### Using the Facade
+
+The `LaravelSonar` facade provides various methods for analyzing your tracking data. Here's a comprehensive example:
 
 ```php
 class AnalyticsDashboardController extends Controller
@@ -220,51 +254,23 @@ class AnalyticsDashboardController extends Controller
 }
 ```
 
-Example Blade view:
+### Available Analytics Methods
 
-```blade
-<div class="analytics-dashboard">
-    <div class="card">
-        <h3>Events by Type</h3>
-        <div class="chart">
-            @foreach($eventsByType as $event)
-                <div class="bar" style="height: {{ $event->count }}px">
-                    <span>{{ $event->type }}: {{ $event->count }}</span>
-                </div>
-            @endforeach
-        </div>
-    </div>
+#### Basic Analytics
 
-    <div class="card">
-        <h3>Top Pages</h3>
-        <ul>
-            @foreach($topPages as $page)
-                <li>{{ $page->page }} ({{ $page->count }} events)</li>
-            @endforeach
-        </ul>
-    </div>
+-   `getEventsByType(DateTime $startDate = null, DateTime $endDate = null)`: Get event counts grouped by type
+-   `getTopLocations(int $limit = 10, DateTime $startDate = null)`: Get most active pages/routes
+-   `getEventTimeline(string $interval = '1 day', DateTime $startDate = null)`: Get event distribution over time
+-   `getTopEvents(int $limit = 10, string $type = null)`: Get most triggered events
+-   `getUserEngagement()`: Get overall engagement metrics
 
-    <!-- Add more visualization components -->
-</div>
-```
+#### Detailed Analytics
 
-### Using with Chart Libraries
-
-The data returned by these methods is compatible with popular charting libraries. Here's an example using Chart.js:
-
-```javascript
-const ctx = document.getElementById('eventChart').getContext('2d');
-const chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: {!! $dailyEvents->pluck('date') !!},
-        datasets: [{
-            label: 'Daily Events',
-            data: {!! $dailyEvents->pluck('count') !!}
-        }]
-    }
-});
-```
+-   `getElementStats(int $limit = 10)`: Get element-specific stats with conversion rates
+-   `getBrowserStats()`: Get browser and device usage statistics
+-   `getScreenSizeStats()`: Get screen size distribution
+-   `getMetadataStats(string $name)`: Get detailed metadata analysis for specific elements
+-   `getLocationStats()`: Get detailed page interaction statistics
 
 ## Testing
 

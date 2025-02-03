@@ -10,7 +10,7 @@ class SonarEvent extends Model
 
     protected $casts = [
         'metadata' => 'array',
-        'screen_size' => 'array',
+        'platform' => 'array',
         'client_timestamp' => 'datetime',
     ];
 }

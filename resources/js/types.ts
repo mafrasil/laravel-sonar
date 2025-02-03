@@ -5,11 +5,15 @@ export interface SonarEvent {
     type: SonarEventType;
     metadata?: Record<string, any>;
     timestamp: number;
-    page: string;
-    userAgent: string;
-    screenSize: {
-        width: number;
-        height: number;
+    location: string;
+    platform: {
+        user_agent: string;
+        screen: {
+            width: number;
+            height: number;
+        };
+        language: string;
+        platform: string;
     };
 }
 

@@ -19,7 +19,7 @@ class SonarDashboardController extends Controller
         return view('sonar::dashboard', [
             'elementStats' => LaravelSonar::getElementStats(20),
             'eventsByType' => LaravelSonar::getEventsByType(now()->subDays(30)),
-            'topPages' => LaravelSonar::getTopPages(5),
+            'topLocations' => LaravelSonar::getTopLocations(5),
             'dailyEvents' => LaravelSonar::getEventTimeline(),
             'engagement' => LaravelSonar::getUserEngagement(),
         ]);

@@ -12,10 +12,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('type');
+            $table->string('location')->nullable();
             $table->json('metadata')->nullable();
-            $table->string('page');
-            $table->string('user_agent');
-            $table->json('screen_size');
+            $table->json('platform')->nullable();
             $table->timestamp('client_timestamp');
             $table->timestamps();
         });

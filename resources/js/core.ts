@@ -43,11 +43,15 @@ export const queueEvent = (
         type,
         metadata,
         timestamp: Date.now(),
-        page: window.location.pathname,
-        userAgent: navigator.userAgent,
-        screenSize: {
-            width: window.innerWidth,
-            height: window.innerHeight,
+        location: window.location.pathname,
+        platform: {
+            user_agent: navigator.userAgent,
+            screen: {
+                width: window.innerWidth,
+                height: window.innerHeight,
+            },
+            language: navigator.language,
+            platform: navigator.platform,
         },
     };
 
@@ -125,7 +129,7 @@ const initSonar = () => {
     // Initial impression detection
     detectImpressions();
 
-    // Handle page unload
+    // Handle location unload
     window.addEventListener("beforeunload", () => {
         if (window.__sonar.queue.length > 0) {
             processQueue();
