@@ -163,6 +163,109 @@ configureSonar({
 });
 ```
 
+## Analytics
+
+Laravel Sonar provides several methods to analyze your collected data. You can use these methods to build dashboards or generate reports.
+
+### Available Methods
+
+```php
+use Mafrasil\LaravelSonar\Facades\LaravelSonar;
+
+// Get events grouped by type
+$eventsByType = LaravelSonar::getEventsByType(
+    startDate: now()->subDays(7), // optional
+    endDate: now() // optional
+);
+
+// Get most active pages
+$topPages = LaravelSonar::getTopPages(
+    limit: 10, // optional, defaults to 10
+    startDate: now()->subDays(30) // optional
+);
+
+// Get event timeline
+$timeline = LaravelSonar::getEventTimeline(
+    interval: '1 day', // optional, defaults to '1 day'
+    startDate: now()->subDays(30) // optional
+);
+
+// Get most triggered events
+$topEvents = LaravelSonar::getTopEvents(
+    limit: 10, // optional, defaults to 10
+    type: 'click' // optional, filter by event type
+);
+
+// Get user engagement metrics
+$engagement = LaravelSonar::getUserEngagement();
+```
+
+### Example Dashboard
+
+Here's an example of how to create a simple dashboard using these methods:
+
+```php
+class AnalyticsDashboardController extends Controller
+{
+    public function index()
+    {
+        return view('analytics.dashboard', [
+            'eventsByType' => LaravelSonar::getEventsByType(now()->subDays(30)),
+            'topPages' => LaravelSonar::getTopPages(5),
+            'dailyEvents' => LaravelSonar::getEventTimeline(),
+            'topClickedElements' => LaravelSonar::getTopEvents(5, 'click'),
+            'engagement' => LaravelSonar::getUserEngagement(),
+        ]);
+    }
+}
+```
+
+Example Blade view:
+
+```blade
+<div class="analytics-dashboard">
+    <div class="card">
+        <h3>Events by Type</h3>
+        <div class="chart">
+            @foreach($eventsByType as $event)
+                <div class="bar" style="height: {{ $event->count }}px">
+                    <span>{{ $event->type }}: {{ $event->count }}</span>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Top Pages</h3>
+        <ul>
+            @foreach($topPages as $page)
+                <li>{{ $page->page }} ({{ $page->count }} events)</li>
+            @endforeach
+        </ul>
+    </div>
+
+    <!-- Add more visualization components -->
+</div>
+```
+
+### Using with Chart Libraries
+
+The data returned by these methods is compatible with popular charting libraries. Here's an example using Chart.js:
+
+```javascript
+const ctx = document.getElementById('eventChart').getContext('2d');
+const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {!! $dailyEvents->pluck('date') !!},
+        datasets: [{
+            label: 'Daily Events',
+            data: {!! $dailyEvents->pluck('count') !!}
+        }]
+    }
+});
+```
+
 ## Testing
 
 ```bash

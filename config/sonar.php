@@ -11,8 +11,8 @@ return [
     |
      */
     'route' => [
-        'prefix' => 'api',
-        'middleware' => ['api'],
+        'prefix' => 'sonar',
+        'middleware' => ['web', 'auth'],
     ],
 
     /*
@@ -42,4 +42,10 @@ return [
         'impression',
         'custom',
     ],
+
+    'allowed_emails' => [
+        // 'admin@example.com'
+    ],
+
+    'path' => 'sonar', // URI path for the Sonar dashboard
 ];
