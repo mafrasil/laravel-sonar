@@ -37,10 +37,7 @@ class LaravelSonarServiceProvider extends PackageServiceProvider
                     ->publishAssets()
                     ->publishMigrations()
                     ->askToRunMigrations()
-                    ->askToStarRepoOnGitHub('mafrasil/laravel-sonar')
-                    ->endWith(function (InstallCommand $command) {
-                        $command->info('Have a great day!');
-                    });
+                    ->askToStarRepoOnGitHub('mafrasil/laravel-sonar');
             });
     }
 
@@ -60,6 +57,7 @@ class LaravelSonarServiceProvider extends PackageServiceProvider
         });
 
         if ($this->app->runningInConsole()) {
+
             // Config
             $this->publishes([
                 __DIR__ . '/../config/sonar.php' => config_path('sonar.php'),
@@ -73,9 +71,9 @@ class LaravelSonarServiceProvider extends PackageServiceProvider
             }
 
             // Assets
-            if (is_dir(__DIR__.'/../dist')) {
+            if (is_dir(__DIR__ . '/../dist')) {
                 $this->publishes([
-                    __DIR__.'/../dist/sonar.iife.js' => public_path('vendor/sonar/sonar.js'), // Specific file with new name
+                    __DIR__ . '/../dist/sonar.iife.js' => public_path('vendor/sonar/sonar.js'), // Specific file with new name
                     // Add other dist files if needed
                 ], 'laravel-sonar-assets');
             }
