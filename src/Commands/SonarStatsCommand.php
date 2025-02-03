@@ -22,7 +22,7 @@ class SonarStatsCommand extends Command
             $rows[] = [
                 $index + 1,
                 $stat->name,
-                $stat->page ?? '-',
+                $stat->location ?? '-',
                 number_format($stat->impressions),
                 sprintf(
                     '%s (%s%%)',
@@ -45,12 +45,12 @@ class SonarStatsCommand extends Command
         return DB::table('sonar_events')
             ->select(
                 'name',
-                'page',
+                'location',
                 DB::raw('SUM(CASE WHEN type = "impression" THEN 1 ELSE 0 END) as impressions'),
                 DB::raw('SUM(CASE WHEN type = "hover" THEN 1 ELSE 0 END) as hovers'),
                 DB::raw('SUM(CASE WHEN type = "click" THEN 1 ELSE 0 END) as clicks')
             )
-            ->groupBy('name', 'page')
+            ->groupBy('name', 'location')
             ->orderByDesc('impressions')
             ->limit((int) $this->option('limit'))
             ->get();
