@@ -14,7 +14,7 @@ class InjectSonarScripts
         $response = $next($request);
 
         if ($response instanceof Response &&
-            ! $request->ajax() &&
+            !$request->ajax() &&
             $request->header('X-Inertia') === null &&
             str_contains($response->headers->get('Content-Type', ''), 'text/html')) {
 
@@ -23,9 +23,9 @@ class InjectSonarScripts
 
             if ($pos !== false) {
                 $scripts = Blade::render('@once
-                    <script src="'.asset('vendor/laravel-sonar/sonar.js').'" defer></script>
+                    <script src="' . asset('vendor/sonar/sonar.js') . '" defer></script>
                 @endonce');
-                $content = substr($content, 0, $pos).$scripts.substr($content, $pos);
+                $content = substr($content, 0, $pos) . $scripts . substr($content, $pos);
                 $response->setContent($content);
             }
         }

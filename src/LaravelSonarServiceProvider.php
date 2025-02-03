@@ -57,13 +57,14 @@ class LaravelSonarServiceProvider extends PackageServiceProvider
                 ], ['laravel-sonar', 'laravel-sonar-views']);
             }
 
-            /*
-        if (is_dir(__DIR__ . '/../resources/dist')) {
-        $this->publishes([
-        __DIR__ . '/../resources/dist' => public_path('vendor/sonar'),
-        ], 'laravel-sonar-assets');
-        }
-         */
+            // Assets
+            if (is_dir(__DIR__ . '/../dist')) {
+                $this->publishes([
+                    __DIR__ . '/../dist/sonar.iife.js' => public_path('vendor/sonar/sonar.js'), // Specific file with new name
+                    // Add other dist files if needed
+                ], 'laravel-sonar-assets');
+            }
+
         }
     }
 }
