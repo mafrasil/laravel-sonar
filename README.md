@@ -202,7 +202,11 @@ This is particularly useful for quick analytics checks or automated reporting sc
 
 ### Access Control
 
-By default, the Sonar dashboard is only accessible in the local environment. To allow specific users in other environments, configure the allowed emails in your `config/sonar.php`:
+By default, the Sonar dashboard is only accessible in the local environment.
+
+You can enable it anytime by setting the SONAR_DASHBOARD_ENABLED environment variable to true.
+
+To allow specific users in other environments, configure the allowed emails in your `config/sonar.php`:
 
 ```php
 'allowed_emails' => [

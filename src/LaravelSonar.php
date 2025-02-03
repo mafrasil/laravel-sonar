@@ -24,7 +24,7 @@ class LaravelSonar
     }
 
     // Get event counts grouped by type
-    public function getEventsByType(?\DateTime $startDate = null, ?\DateTime $endDate = null): Collection
+    public function getEventsByType( ? \DateTime $startDate = null,  ? \DateTime $endDate = null) : Collection
     {
         $query = SonarEvent::query();
 
@@ -41,13 +41,8 @@ class LaravelSonar
             ->get();
     }
 
-<<<<<<< HEAD
     // Get most active locations
     public function getTopLocations(int $limit = 10,  ? \DateTime $startDate = null) : Collection
-=======
-    // Get most active pages
-    public function getTopPages(int $limit = 10, ?\DateTime $startDate = null): Collection
->>>>>>> 4568fa9d6fcc6b755e46da353ae9b1149ad35feb
     {
         $query = SonarEvent::query();
 
@@ -63,7 +58,7 @@ class LaravelSonar
     }
 
     // Get event timeline
-    public function getEventTimeline(string $interval = '1 day', ?\DateTime $startDate = null): Collection
+    public function getEventTimeline(string $interval = '1 day',  ? \DateTime $startDate = null) : Collection
     {
         $query = SonarEvent::query();
 
@@ -90,7 +85,7 @@ class LaravelSonar
     }
 
     // Get most triggered events
-    public function getTopEvents(int $limit = 10, ?string $type = null): Collection
+    public function getTopEvents(int $limit = 10, ?string $type = null) : Collection
     {
         $query = SonarEvent::query();
 
@@ -178,12 +173,7 @@ class LaravelSonar
             ->orderByDesc('count')
             ->get()
             ->map(function ($stat) {
-<<<<<<< HEAD
                 $platform = json_decode($stat->platform);
-=======
-                $size = json_decode($stat->screen_size);
-
->>>>>>> 4568fa9d6fcc6b755e46da353ae9b1149ad35feb
                 return [
                     'width' => $platform->screen->width,
                     'height' => $platform->screen->height,

@@ -2,6 +2,24 @@
 
 // config for Mafrasil/LaravelSonar
 return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Enable or disable the Sonar dashboard and configure its settings.
+    |
+     */
+    'dashboard' => [
+        'enabled' => env('SONAR_DASHBOARD_ENABLED', config('app.debug')),
+        'path' => 'sonar', // URI path for the Sonar dashboard
+    ],
+
+    'allowed_emails' => [
+        // 'admin@example.com'
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Route Configuration
@@ -42,10 +60,4 @@ return [
         'impression',
         'custom',
     ],
-
-    'allowed_emails' => [
-        // 'admin@example.com'
-    ],
-
-    'path' => 'sonar', // URI path for the Sonar dashboard
 ];
