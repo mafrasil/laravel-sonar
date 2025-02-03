@@ -22,7 +22,7 @@ class LaravelSonar
     }
 
     // Get event counts grouped by type
-    public function getEventsByType( ? \DateTime $startDate = null,  ? \DateTime $endDate = null) : Collection
+    public function getEventsByType(?\DateTime $startDate = null, ?\DateTime $endDate = null): Collection
     {
         $query = SonarEvent::query();
 
@@ -40,7 +40,7 @@ class LaravelSonar
     }
 
     // Get most active pages
-    public function getTopPages(int $limit = 10,  ? \DateTime $startDate = null) : Collection
+    public function getTopPages(int $limit = 10, ?\DateTime $startDate = null): Collection
     {
         $query = SonarEvent::query();
 
@@ -56,7 +56,7 @@ class LaravelSonar
     }
 
     // Get event timeline
-    public function getEventTimeline(string $interval = '1 day',  ? \DateTime $startDate = null) : Collection
+    public function getEventTimeline(string $interval = '1 day', ?\DateTime $startDate = null): Collection
     {
         $query = SonarEvent::query();
 
@@ -83,7 +83,7 @@ class LaravelSonar
     }
 
     // Get most triggered events
-    public function getTopEvents(int $limit = 10, ?string $type = null) : Collection
+    public function getTopEvents(int $limit = 10, ?string $type = null): Collection
     {
         $query = SonarEvent::query();
 
@@ -171,6 +171,7 @@ class LaravelSonar
             ->get()
             ->map(function ($stat) {
                 $size = json_decode($stat->screen_size);
+
                 return [
                     'width' => $size->width,
                     'height' => $size->height,
@@ -189,11 +190,13 @@ class LaravelSonar
             ->get()
             ->groupBy(function ($event) {
                 $metadata = is_string($event->metadata) ? json_decode($event->metadata) : $event->metadata;
+
                 return json_encode($metadata);
             })
             ->map(function ($group) use ($name) {
                 $metadata = $group->first()->metadata;
                 $metadata = is_string($metadata) ? json_decode($metadata) : $metadata;
+
                 return [
                     'metadata' => $metadata,
                     'count' => $group->count(),
