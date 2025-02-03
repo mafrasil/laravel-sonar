@@ -68,12 +68,11 @@ class LaravelSonar
 
         // Use different date formatting based on database driver
         $driver = config('database.default');
-
-        if ($driver === 'sqlite') {
-            $dateFormat = "strftime('%Y-%m-%d', created_at)";
-        } else {
-            $dateFormat = "DATE_FORMAT(created_at, '%Y-%m-%d')";
-        }
+        $dateFormat = match ($driver) {
+            'sqlite' => "strftime('%Y-%m-%d', created_at)",
+            'pgsql' => "TO_CHAR(created_at, 'YYYY-MM-DD')",
+            default => "DATE_FORMAT(created_at, '%Y-%m-%d')"
+        };
 
         return $query->groupBy(DB::raw($dateFormat))
             ->select([

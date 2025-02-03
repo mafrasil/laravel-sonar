@@ -50,7 +50,11 @@ class SonarDashboardController extends Controller
     protected function getElementTimeline(string $elementName)
     {
         $driver = config('database.default');
-        $dateFormat = $driver === 'sqlite' ? "strftime('%Y-%m-%d', created_at)" : "DATE_FORMAT(created_at, '%Y-%m-%d')";
+        $dateFormat = match ($driver) {
+            'sqlite' => "strftime('%Y-%m-%d', created_at)",
+            'pgsql' => "TO_CHAR(created_at, 'YYYY-MM-DD')",
+            default => "DATE_FORMAT(created_at, '%Y-%m-%d')"
+        };
 
         return SonarEvent::where('name', $elementName)
             ->groupBy(DB::raw($dateFormat))
