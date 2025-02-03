@@ -24,7 +24,7 @@ class LaravelSonar
     }
 
     // Get event counts grouped by type
-    public function getEventsByType( ? \DateTime $startDate = null,  ? \DateTime $endDate = null) : Collection
+    public function getEventsByType(?\DateTime $startDate = null, ?\DateTime $endDate = null): Collection
     {
         $query = SonarEvent::query();
 
@@ -42,7 +42,7 @@ class LaravelSonar
     }
 
     // Get most active locations
-    public function getTopLocations(int $limit = 10,  ? \DateTime $startDate = null) : Collection
+    public function getTopLocations(int $limit = 10, ?\DateTime $startDate = null): Collection
     {
         $query = SonarEvent::query();
 
@@ -58,7 +58,7 @@ class LaravelSonar
     }
 
     // Get event timeline
-    public function getEventTimeline(string $interval = '1 day',  ? \DateTime $startDate = null) : Collection
+    public function getEventTimeline(string $interval = '1 day', ?\DateTime $startDate = null): Collection
     {
         $query = SonarEvent::query();
 
@@ -85,7 +85,7 @@ class LaravelSonar
     }
 
     // Get most triggered events
-    public function getTopEvents(int $limit = 10, ?string $type = null) : Collection
+    public function getTopEvents(int $limit = 10, ?string $type = null): Collection
     {
         $query = SonarEvent::query();
 
