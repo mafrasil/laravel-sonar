@@ -1,0 +1,19 @@
+{
+    "name": "laravel-sonar",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build --mode iife",
+        "dev": "vite",
+        "prepare": "npm run build"
+    },
+    "devDependencies": {
+        "@types/react": "^18.0.0",
+        "typescript": "^4.9.0",
+        "vite": "^4.0.0",
+        "react": "^18.0.0"
+    },
+    "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    }
+}
