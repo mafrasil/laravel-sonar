@@ -310,6 +310,18 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
+## Inspiration & Acknowledgments
+
+Laravel Sonar was inspired by [Pan](https://github.com/panphp/pan), a lightweight and privacy-focused PHP product analytics library. While sharing similar core concepts for simple analytics tracking, Laravel Sonar extends the functionality with additional features including:
+
+-   Rich metadata support for events
+-   Built-in analytics dashboard UI
+-   Advanced analytics reporting capabilities
+-   Screen size and device tracking
+-   Detailed user engagement metrics
+-   React component integration
+-   And more...
+
 ## Credits
 
 -   [mafrasil](https://github.com/mafrasil)
