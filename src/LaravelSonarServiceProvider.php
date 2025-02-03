@@ -40,6 +40,7 @@ class LaravelSonarServiceProvider extends PackageServiceProvider
             }
 
             $emails = config('sonar.allowed_emails', []);
+
             return $user && in_array($user->email, $emails);
         });
 

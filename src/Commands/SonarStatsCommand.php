@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 class SonarStatsCommand extends Command
 {
     protected $signature = 'sonar:stats {--limit=10}';
+
     protected $description = 'Display Sonar analytics in a table format';
 
     public function handle()
@@ -24,12 +25,12 @@ class SonarStatsCommand extends Command
                 $stat->page ?? '-',
                 number_format($stat->impressions),
                 sprintf(
-                    "%s (%s%%)",
+                    '%s (%s%%)',
                     number_format($stat->hovers),
                     number_format(($stat->impressions > 0 ? ($stat->hovers / $stat->impressions) * 100 : 0), 1)
                 ),
                 sprintf(
-                    "%s (%s%%)",
+                    '%s (%s%%)',
                     number_format($stat->clicks),
                     number_format(($stat->impressions > 0 ? ($stat->clicks / $stat->impressions) * 100 : 0), 1)
                 ),
